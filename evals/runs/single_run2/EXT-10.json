@@ -1,0 +1,197 @@
+{
+  "request_id": "REQ-1010",
+  "recommendation": "Route for standard approval (Manager)",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester Noah Williams (E004) is in Finance; manager Priya Shah.",
+      "reference": "employees.csv:E004"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Finance has $29,000 available; request $950 is within budget.",
+      "reference": "department_budgets.csv:Finance"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "SignFlow (SignFlow, E-signature) is 'Approved' with 45 seats, scope Company-wide: Electronic signatures [match: same_vendor].",
+      "reference": "software_catalog.csv:SW010"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "2026-07-04: Finance bought SignFlow for $16,000 (Approved; Company-wide agreement).",
+      "reference": "purchase_history.csv:PO-2513"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'Approved', security 'Approved' (reviewed 2026-06-20), legal terms 'Approved'. Note: Standard vendor.",
+      "reference": "vendors.csv:V010"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service: risk 'low', security review 'approved' (last 2026-06-20), processes personal data: True, stores data outside region: False. Note: Current assessment..",
+      "reference": "vendor-risk API GET /vendor-risk/SignFlow"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 9 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $950 falls in the up to $1,000 band: minimum approvals Manager.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Request fits Finance's available budget. A positive budget check does not imply approval.",
+      "reference": "Policy \u00a72"
+    }
+  ],
+  "required_approvals": [
+    "Manager"
+  ],
+  "missing_information": [],
+  "risk_flags": [],
+  "next_step": "1) Route to Manager for approval. 2) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 2,
+    "tool_calls": 9,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "lookup_policy_sections",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "single",
+  "llm_provider": "Kiro CLI, model claude-haiku-4.5",
+  "model": "claude-haiku-4.5",
+  "primary_action": "STANDARD_APPROVAL",
+  "actions": [
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "This request is for a one-time annual training package for 12 new Finance users on SignFlow, which is already an approved, company-wide tool with existing seats [EV-3]. Finance has a recent purchase history with SignFlow (2026-07-04, $16,000 company-wide agreement) [EV-4], suggesting the tool is already in use. The $950 request fits within Finance's available budget [EV-2] and requires only manager approval per policy [EV-8]. However, the overlap with existing deployment and recent purchase should be clarified before approval.",
+  "overlap_assessment": {
+    "verdict": "not_applicable",
+    "existing_option": null,
+    "reason": "No overlapping catalog product.",
+    "evidence_ids": []
+  },
+  "clarifying_questions": [],
+  "approval_reasons": {
+    "Manager": [
+      "annual amount $950 is in the up to $1,000 band"
+    ]
+  },
+  "next_steps": [
+    "Route to Manager for approval.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9"
+  ],
+  "guardrail_events": [
+    {
+      "kind": "judgement_rejected",
+      "detail": "'likely_covered' cited 'SW010', which is not an overlap candidate"
+    }
+  ],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 6.8,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 5.2,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 2.2,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 1.8,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 1.6,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 9.9,
+      "error": null
+    },
+    {
+      "tool": "lookup_policy_sections",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.1,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.3,
+      "error": null
+    }
+  ],
+  "llm_trace": [
+    {
+      "purpose": "procurement copilot agent: plan",
+      "ok": true,
+      "latency_ms": 9158.9,
+      "credits": 0.02649502673300166,
+      "prompt_chars": 2661
+    },
+    {
+      "purpose": "single agent: decide",
+      "ok": true,
+      "latency_ms": 10103.5,
+      "credits": 0.023569351907131008,
+      "prompt_chars": 4515
+    }
+  ],
+  "credits_used": 0.0501,
+  "internal_latency_ms": 19295.1
+}

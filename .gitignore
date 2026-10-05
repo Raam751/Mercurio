@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+.DS_Store
+.pytest_cache/
+
+# Local run artifacts (audit log of human decisions made in the UI).
+# Leading slash: only the top-level folder, not evals/runs/ (committed evaluation outputs).
+/runs/
+
+# NOTE: evals/results_*.csv used to be ignored here, but the submission must
+# include reproducible evaluation results, so they are committed.

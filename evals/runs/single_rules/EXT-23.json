@@ -1,0 +1,194 @@
+{
+  "request_id": "REQ-1001",
+  "recommendation": "Hold for manual vendor verification: vendor-risk service unavailable; status not assumed favourable",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester Noah Williams (E004) is in Finance; manager Priya Shah.",
+      "reference": "employees.csv:E004"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Finance has $29,000 available; request $800 is within budget.",
+      "reference": "department_budgets.csv:Finance"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "SignFlow (SignFlow, E-signature) is 'Approved' with 45 seats, scope Company-wide: Electronic signatures [match: same_vendor, same_category].",
+      "reference": "software_catalog.csv:SW010"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "2026-07-04: Finance bought SignFlow for $16,000 (Approved; Company-wide agreement).",
+      "reference": "purchase_history.csv:PO-2513"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'Approved', security 'Approved' (reviewed 2026-06-20), legal terms 'Approved'. Note: Standard vendor.",
+      "reference": "vendors.csv:V010"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service unavailable (HTTP n/a: service unreachable) after 2 attempt(s); status not verified.",
+      "reference": "vendor-risk API GET /vendor-risk/SignFlow"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 8 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $800 falls in the up to $1,000 band: minimum approvals Manager.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Request fits Finance's available budget. A positive budget check does not imply approval.",
+      "reference": "Policy \u00a72"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Existing approved option(s) overlap with this request: SignFlow (SW010). Overlap is not an automatic rejection; confirm the gap or exception reason.",
+      "reference": "Policy \u00a73"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Vendor-risk service unavailable (service unreachable); vendor status was not assumed favourable.",
+      "reference": "Policy \u00a710"
+    }
+  ],
+  "required_approvals": [
+    "Manager",
+    "Security"
+  ],
+  "missing_information": [],
+  "risk_flags": [
+    "vendor_risk_unavailable",
+    "existing_tool_overlap",
+    "security_review_required"
+  ],
+  "next_step": "1) Security to verify the vendor's assessment manually (vendor-risk service unavailable; status not assumed favourable). 2) Procurement to confirm the stated gap versus existing option(s) SW010. 3) Send the evidence package to Security for review. 4) Route to Manager for approval. 5) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 0,
+    "tool_calls": 8,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "single",
+  "llm_provider": "LLM_PROVIDER=rules",
+  "model": null,
+  "primary_action": "VERIFY_VENDOR",
+  "actions": [
+    "VERIFY_VENDOR",
+    "SPECIALIST_REVIEW",
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "Hold for manual vendor verification. Reasons: vendor-risk service unavailable; status not assumed favourable; required reviews: Security. Required approvals: Manager and Security.",
+  "overlap_assessment": {
+    "verdict": "unclear",
+    "existing_option": "SW010",
+    "reason": "Overlap found; Procurement must confirm the stated gap.",
+    "evidence_ids": []
+  },
+  "clarifying_questions": [],
+  "approval_reasons": {
+    "Manager": [
+      "annual amount $800 is in the up to $1,000 band"
+    ],
+    "Security": [
+      "vendor security status could not be verified (service unavailable)"
+    ]
+  },
+  "next_steps": [
+    "Security to verify the vendor's assessment manually (vendor-risk service unavailable; status not assumed favourable).",
+    "Procurement to confirm the stated gap versus existing option(s) SW010.",
+    "Send the evidence package to Security for review.",
+    "Route to Manager for approval.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9",
+    "EV-10",
+    "EV-11"
+  ],
+  "guardrail_events": [],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.6,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.4,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.4,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "system",
+      "ok": false,
+      "latency_ms": 208.6,
+      "error": "service unreachable"
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.1,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.7,
+      "error": null
+    }
+  ],
+  "llm_trace": [],
+  "credits_used": 0.0,
+  "internal_latency_ms": 212.1
+}

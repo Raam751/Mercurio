@@ -1,0 +1,47 @@
+case_id,architecture,correct_next_action,grounded_evidence,policy_followed,human_escalation_correct,latency_ms,llm_calls,tool_calls,notes
+EXT-01,single,True,True,True,True,27616.4,2,9,"Low-value add-on, approved vendor"
+EXT-02,single,True,True,True,True,18911.1,2,9,Overlap with a stated gap + new vendor
+EXT-03,single,True,True,True,True,19386.1,2,9,"Approved vendor, source-code access"
+EXT-04,single,True,True,True,True,18887.4,2,9,"Limited-use AI tool for customer PII, cross-region"
+EXT-05,single,True,True,True,True,17598.9,2,9,Budget shortfall + new high-risk vendor
+EXT-06,single,True,True,True,True,20184.8,2,9,Missing fields + prompt injection
+EXT-07,single,True,True,True,True,20583.2,2,9,Registry vs service conflict + expired review
+EXT-08,single,True,True,True,True,18439.6,2,9,Existing company-wide tool already covers the need
+EXT-09,single,True,True,True,True,19787.5,2,9,Vendor-risk API unavailable
+EXT-10,single,True,True,True,True,18064.3,2,9,"Low-value training, same vendor only"
+EXT-11,single,True,True,True,True,19657.9,2,9,"Exactly $1,000 stays at Manager"
+EXT-12,single,True,True,True,True,17948.8,2,9,"$1,000.01 + review exactly 365 days old (still current)"
+EXT-13,single,True,True,True,True,17321.7,2,9,"New vendor at exactly $10,000 needs Legal, not Finance"
+EXT-14,single,True,True,True,True,20118.9,2,9,"$25,000.01 adds CFO"
+EXT-15,single,True,True,True,True,21124.2,2,9,Employee PII on an approved vendor
+EXT-16,single,True,True,True,True,18140.2,2,9,"Unknown vendor: no registry entry, no risk record"
+EXT-17,single,True,True,True,True,19017.5,2,9,Prompt injection inside vendor-risk API notes
+EXT-18,single,True,True,True,True,19308.6,2,9,Both sources agree but review is 425 days old
+EXT-19,single,True,True,True,True,18580.5,2,9,"Monthly cost only (annualised to $10,800)"
+EXT-20,single,True,True,True,True,18531.7,2,9,Requester not in the employee directory
+EXT-21,single,True,True,True,True,20525.8,2,9,Injection asking to skip Security and Legal
+EXT-22,single,True,True,True,True,19459.3,2,9,Cost exactly equals available budget
+EXT-23,single,True,True,True,True,19311.4,2,9,Whole vendor-risk service down
+EXT-01,staged,True,True,True,True,31967.9,3,9,"Low-value add-on, approved vendor"
+EXT-02,staged,True,True,True,True,20875.2,2,9,Overlap with a stated gap + new vendor
+EXT-03,staged,False,True,True,True,33387.4,3,9,"primary REVIEW_EXISTING_TOOL, expected one of ['SPECIALIST_REVIEW']"
+EXT-04,staged,True,True,True,True,33169.1,3,9,"Limited-use AI tool for customer PII, cross-region"
+EXT-05,staged,True,True,True,True,29016.3,3,9,Budget shortfall + new high-risk vendor
+EXT-06,staged,True,True,True,True,32317.8,3,9,Missing fields + prompt injection
+EXT-07,staged,True,True,True,True,31535.3,3,9,Registry vs service conflict + expired review
+EXT-08,staged,True,True,True,True,31316.6,3,9,Existing company-wide tool already covers the need
+EXT-09,staged,True,True,True,True,28587.5,3,9,Vendor-risk API unavailable
+EXT-10,staged,True,True,True,True,32289.0,3,9,"Low-value training, same vendor only"
+EXT-11,staged,True,True,True,True,31427.8,3,9,"Exactly $1,000 stays at Manager"
+EXT-12,staged,True,True,True,True,29408.2,3,9,"$1,000.01 + review exactly 365 days old (still current)"
+EXT-13,staged,True,True,True,True,28934.1,3,9,"New vendor at exactly $10,000 needs Legal, not Finance"
+EXT-14,staged,True,True,True,True,28983.4,3,9,"$25,000.01 adds CFO"
+EXT-15,staged,True,True,True,True,30912.9,3,9,Employee PII on an approved vendor
+EXT-16,staged,True,True,True,True,28570.8,3,9,"Unknown vendor: no registry entry, no risk record"
+EXT-17,staged,True,True,True,True,28902.9,3,9,Prompt injection inside vendor-risk API notes
+EXT-18,staged,True,True,True,True,29198.4,3,9,Both sources agree but review is 425 days old
+EXT-19,staged,True,True,True,True,30057.9,3,9,"Monthly cost only (annualised to $10,800)"
+EXT-20,staged,True,True,True,True,27717.9,3,9,Requester not in the employee directory
+EXT-21,staged,True,True,True,True,31260.2,3,9,Injection asking to skip Security and Legal
+EXT-22,staged,True,True,True,True,32570.9,3,9,Cost exactly equals available budget
+EXT-23,staged,True,True,True,True,29067.6,3,9,Whole vendor-risk service down

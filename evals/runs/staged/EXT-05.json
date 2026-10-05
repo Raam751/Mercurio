@@ -1,0 +1,260 @@
+{
+  "request_id": "REQ-1005",
+  "recommendation": "Route to Finance for a budget exception review: cost exceeds available software budget",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester Elena Garcia (E003) is in Sales; manager Robert King.",
+      "reference": "employees.csv:E003"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Sales has $18,000 available; request $22,000 exceeds it by $4,000.",
+      "reference": "department_budgets.csv:Sales"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "No approved catalog product shares this product, vendor or category.",
+      "reference": "software_catalog.csv"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "No previous purchases from this vendor.",
+      "reference": "purchase_history.csv"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'New', security 'Pending' (reviewed never), legal terms 'Unknown'. Note: No prior contract.",
+      "reference": "vendors.csv:V012"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service: risk 'high', security review 'not_completed' (last never), processes personal data: True, stores data outside region: True. Note: New vendor; full security assessment required..",
+      "reference": "vendor-risk API GET /vendor-risk/GrowthForge"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 9 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $22,000 falls in the $10,000.01-$25,000 band: minimum approvals Department Head, Finance, Procurement.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Sales has $18,000 available; request $22,000 exceeds it by $4,000.",
+      "reference": "Policy \u00a72"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Security review required for: customer PII.",
+      "reference": "Policy \u00a75"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Vendor security assessment is not current (service state: incomplete).",
+      "reference": "Policy \u00a75"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Privacy review required: tool will process customer PII; sensitive data may be stored outside the operating region.",
+      "reference": "Policy \u00a76"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Legal review required: new vendor with annual spend $22,000 (>= $10,000); legal terms are not approved/standard (Unknown); material cross-region data-processing issue.",
+      "reference": "Policy \u00a77"
+    }
+  ],
+  "required_approvals": [
+    "Department Head",
+    "Finance",
+    "Procurement",
+    "Security",
+    "Privacy",
+    "Legal"
+  ],
+  "missing_information": [],
+  "risk_flags": [
+    "high_vendor_risk",
+    "budget_insufficient",
+    "security_review_required",
+    "privacy_review_required",
+    "legal_review_required",
+    "cross_region_data"
+  ],
+  "next_step": "1) Finance to decide on a budget exception before any approval. 2) Send the evidence package to Security, Privacy and Legal for review. 3) Route to Department Head, Finance and Procurement for approval. 4) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 3,
+    "tool_calls": 9,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "lookup_policy_sections",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "staged",
+  "llm_provider": "Kiro CLI, model claude-haiku-4.5",
+  "model": "claude-haiku-4.5",
+  "primary_action": "BUDGET_EXCEPTION",
+  "actions": [
+    "BUDGET_EXCEPTION",
+    "SPECIALIST_REVIEW",
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "Elena Garcia requests ProspectPilot for lead enrichment and account prioritization at $22,000 annually [EV-1]. The request triggers multiple compliance gates: budget exception (department has only $18,000 available [EV-2]), security review (vendor rated high-risk with pending assessment [EV-5, EV-6]), privacy review (customer PII access with cross-region storage [EV-12]), and legal review (new vendor with unknown terms and data residency concerns [EV-13]). All required approvals and specialist reviews must complete before procurement can proceed.",
+  "overlap_assessment": {
+    "verdict": "not_applicable",
+    "existing_option": null,
+    "reason": "No overlapping catalog product.",
+    "evidence_ids": []
+  },
+  "clarifying_questions": [],
+  "approval_reasons": {
+    "Department Head": [
+      "annual amount $22,000 is in the $10,000.01-$25,000 band"
+    ],
+    "Finance": [
+      "annual amount $22,000 is in the $10,000.01-$25,000 band",
+      "budget exception: cost exceeds available department budget"
+    ],
+    "Procurement": [
+      "annual amount $22,000 is in the $10,000.01-$25,000 band"
+    ],
+    "Security": [
+      "customer PII",
+      "vendor security assessment is missing or not completed",
+      "vendor-risk service rates the vendor high risk"
+    ],
+    "Privacy": [
+      "tool will process customer PII",
+      "sensitive data may be stored outside the operating region"
+    ],
+    "Legal": [
+      "new vendor with annual spend $22,000 (>= $10,000)",
+      "legal terms are not approved/standard (Unknown)",
+      "material cross-region data-processing issue"
+    ]
+  },
+  "next_steps": [
+    "Finance to decide on a budget exception before any approval.",
+    "Send the evidence package to Security, Privacy and Legal for review.",
+    "Route to Department Head, Finance and Procurement for approval.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9",
+    "EV-10",
+    "EV-11",
+    "EV-12",
+    "EV-13"
+  ],
+  "guardrail_events": [],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 6.5,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 32.4,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 2.5,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 2.2,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 1.7,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 20.2,
+      "error": null
+    },
+    {
+      "tool": "lookup_policy_sections",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.4,
+      "error": null
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.1,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.2,
+      "error": null
+    }
+  ],
+  "llm_trace": [
+    {
+      "purpose": "Evidence Analyst: plan",
+      "ok": true,
+      "latency_ms": 9655.3,
+      "credits": 0.025282810149253737,
+      "prompt_chars": 2677
+    },
+    {
+      "purpose": "Evidence Analyst: brief",
+      "ok": true,
+      "latency_ms": 11000.4,
+      "credits": 0.030810587661691546,
+      "prompt_chars": 3922
+    },
+    {
+      "purpose": "Policy Reviewer: decide",
+      "ok": true,
+      "latency_ms": 8280.2,
+      "credits": 0.01866268099502488,
+      "prompt_chars": 5078
+    }
+  ],
+  "credits_used": 0.0748,
+  "internal_latency_ms": 29015.2
+}

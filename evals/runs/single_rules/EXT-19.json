@@ -1,0 +1,177 @@
+{
+  "request_id": "REQ-X10",
+  "recommendation": "Route for standard approval (Department Head, Finance and Procurement)",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester Elena Garcia (E003) is in Sales; manager Robert King.",
+      "reference": "employees.csv:E003"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Sales has $18,000 available; request $10,800 is within budget.",
+      "reference": "department_budgets.csv:Sales"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "No approved catalog product shares this product, vendor or category.",
+      "reference": "software_catalog.csv"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "No previous purchases from this vendor.",
+      "reference": "purchase_history.csv"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'Approved', security 'Approved' (reviewed 2025-09-30), legal terms 'Approved'. Note: Standard vendor.",
+      "reference": "vendors.csv:V104"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service: risk 'low', security review 'approved' (last 2025-09-30), processes personal data: False, stores data outside region: False. Note: Current assessment..",
+      "reference": "vendor-risk API GET /vendor-risk/SlotWise"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 8 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $10,800 (monthly_cost_usd x 12 (estimate)) falls in the $10,000.01-$25,000 band: minimum approvals Department Head, Finance, Procurement.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Request fits Sales's available budget. A positive budget check does not imply approval.",
+      "reference": "Policy \u00a72"
+    }
+  ],
+  "required_approvals": [
+    "Department Head",
+    "Finance",
+    "Procurement"
+  ],
+  "missing_information": [],
+  "risk_flags": [],
+  "next_step": "1) Route to Department Head, Finance and Procurement for approval. 2) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 0,
+    "tool_calls": 8,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "single",
+  "llm_provider": "LLM_PROVIDER=rules",
+  "model": null,
+  "primary_action": "STANDARD_APPROVAL",
+  "actions": [
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "Route for standard approval. Required approvals: Department Head, Finance and Procurement.",
+  "overlap_assessment": {
+    "verdict": "not_applicable",
+    "existing_option": null,
+    "reason": "No overlapping catalog product.",
+    "evidence_ids": []
+  },
+  "clarifying_questions": [],
+  "approval_reasons": {
+    "Department Head": [
+      "annual amount $10,800 is in the $10,000.01-$25,000 band"
+    ],
+    "Finance": [
+      "annual amount $10,800 is in the $10,000.01-$25,000 band"
+    ],
+    "Procurement": [
+      "annual amount $10,800 is in the $10,000.01-$25,000 band"
+    ]
+  },
+  "next_steps": [
+    "Route to Department Head, Finance and Procurement for approval.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9"
+  ],
+  "guardrail_events": [],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.6,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.4,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.6,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 2.5,
+      "error": null
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.0,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.1,
+      "error": null
+    }
+  ],
+  "llm_trace": [],
+  "credits_used": 0.0,
+  "internal_latency_ms": 5.4
+}

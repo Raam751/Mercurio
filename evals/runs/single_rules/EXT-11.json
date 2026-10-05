@@ -1,0 +1,178 @@
+{
+  "request_id": "REQ-X01",
+  "recommendation": "Route for standard approval (Manager)",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester Noah Williams (E004) is in Finance; manager Priya Shah.",
+      "reference": "employees.csv:E004"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Finance has $29,000 available; request $1,000 is within budget.",
+      "reference": "department_budgets.csv:Finance"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "SignFlow (SignFlow, E-signature) is 'Approved' with 45 seats, scope Company-wide: Electronic signatures [match: same_vendor, same_category].",
+      "reference": "software_catalog.csv:SW010"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "2026-07-04: Finance bought SignFlow for $16,000 (Approved; Company-wide agreement).",
+      "reference": "purchase_history.csv:PO-2513"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'Approved', security 'Approved' (reviewed 2026-06-20), legal terms 'Approved'. Note: Standard vendor.",
+      "reference": "vendors.csv:V010"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service: risk 'low', security review 'approved' (last 2026-06-20), processes personal data: True, stores data outside region: False. Note: Current assessment..",
+      "reference": "vendor-risk API GET /vendor-risk/SignFlow"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 9 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $1,000 falls in the up to $1,000 band: minimum approvals Manager.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Request fits Finance's available budget. A positive budget check does not imply approval.",
+      "reference": "Policy \u00a72"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Existing approved option(s) overlap with this request: SignFlow (SW010). Overlap is not an automatic rejection; confirm the gap or exception reason.",
+      "reference": "Policy \u00a73"
+    }
+  ],
+  "required_approvals": [
+    "Manager"
+  ],
+  "missing_information": [],
+  "risk_flags": [
+    "existing_tool_overlap"
+  ],
+  "next_step": "1) Route to Manager for approval. 2) Procurement to confirm the stated gap versus existing option(s) SW010. 3) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 0,
+    "tool_calls": 8,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "single",
+  "llm_provider": "LLM_PROVIDER=rules",
+  "model": null,
+  "primary_action": "STANDARD_APPROVAL",
+  "actions": [
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "Route for standard approval. Required approvals: Manager.",
+  "overlap_assessment": {
+    "verdict": "unclear",
+    "existing_option": "SW010",
+    "reason": "Overlap found; Procurement must confirm the stated gap.",
+    "evidence_ids": []
+  },
+  "clarifying_questions": [],
+  "approval_reasons": {
+    "Manager": [
+      "annual amount $1,000 is in the up to $1,000 band"
+    ]
+  },
+  "next_steps": [
+    "Route to Manager for approval.",
+    "Procurement to confirm the stated gap versus existing option(s) SW010.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9",
+    "EV-10"
+  ],
+  "guardrail_events": [],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 1.4,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 1.0,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 1.6,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 1.3,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 1.0,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 4.9,
+      "error": null
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.1,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.3,
+      "error": null
+    }
+  ],
+  "llm_trace": [],
+  "credits_used": 0.0,
+  "internal_latency_ms": 11.7
+}

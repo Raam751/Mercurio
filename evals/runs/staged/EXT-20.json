@@ -1,0 +1,215 @@
+{
+  "request_id": "REQ-X11",
+  "recommendation": "Request clarification before review: material request information is missing",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester ID 'E999' is not in the employee directory.",
+      "reference": "employees.csv"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Budget not checked: requester department is unknown.",
+      "reference": "department_budgets.csv"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "No approved catalog product shares this product, vendor or category.",
+      "reference": "software_catalog.csv"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "No previous purchases from this vendor.",
+      "reference": "purchase_history.csv"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'Approved', security 'Approved' (reviewed 2025-09-30), legal terms 'Approved'. Note: Standard vendor.",
+      "reference": "vendors.csv:V104"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service: risk 'low', security review 'approved' (last 2025-09-30), processes personal data: False, stores data outside region: False. Note: Current assessment..",
+      "reference": "vendor-risk API GET /vendor-risk/SlotWise"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 8 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "1 required field(s) missing or unusable; the copilot does not invent values.",
+      "reference": "Policy \u00a71"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $500 falls in the up to $1,000 band: minimum approvals Manager.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Budget not checked: the requester (and so the department) is unknown.",
+      "reference": "Policy \u00a72"
+    }
+  ],
+  "required_approvals": [
+    "Manager"
+  ],
+  "missing_information": [
+    "Requester and department (requester ID 'E999' not found in the employee directory)"
+  ],
+  "risk_flags": [
+    "missing_information"
+  ],
+  "next_step": "1) Ask the requester for: Requester and department. Do not route for approval until the request is complete. 2) Route to Manager for approval. 3) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 3,
+    "tool_calls": 9,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "lookup_policy_sections",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "staged",
+  "llm_provider": "Kiro CLI, model claude-haiku-4.5",
+  "model": "claude-haiku-4.5",
+  "primary_action": "REQUEST_CLARIFICATION",
+  "actions": [
+    "REQUEST_CLARIFICATION",
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "The request cannot proceed to standard approval without resolving the requester identity. [EV-1] shows that requester ID 'E999' is not found in the employee directory, which prevents verification of the requester and identification of the department for budget checking. [EV-9] confirms the $500 annual cost triggers manager approval requirements, but manager approval cannot be obtained without a valid requester and department. The vendor (SlotWise) has acceptable risk profile [EV-5] and [EV-6], but the missing requester verification is a blocker.",
+  "overlap_assessment": {
+    "verdict": "not_applicable",
+    "existing_option": null,
+    "reason": "No overlapping catalog product.",
+    "evidence_ids": []
+  },
+  "clarifying_questions": [
+    "Can you verify the requester's correct employee ID or full name? The ID 'E999' was not found in the employee directory.",
+    "What department should this purchase be charged to?",
+    "Why do existing approved scheduling or booking tools not meet the need for contractor booking links?"
+  ],
+  "approval_reasons": {
+    "Manager": [
+      "annual amount $500 is in the up to $1,000 band"
+    ]
+  },
+  "next_steps": [
+    "Ask the requester for: Requester and department. Do not route for approval until the request is complete.",
+    "Route to Manager for approval.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9",
+    "EV-10"
+  ],
+  "guardrail_events": [],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 6.7,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.2,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 4.5,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 1.0,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.9,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 7.2,
+      "error": null
+    },
+    {
+      "tool": "lookup_policy_sections",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.6,
+      "error": null
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.0,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.2,
+      "error": null
+    }
+  ],
+  "llm_trace": [
+    {
+      "purpose": "Evidence Analyst: plan",
+      "ok": true,
+      "latency_ms": 9011.4,
+      "credits": 0.027904134792703157,
+      "prompt_chars": 2632
+    },
+    {
+      "purpose": "Evidence Analyst: brief",
+      "ok": true,
+      "latency_ms": 9595.2,
+      "credits": 0.02617992543946932,
+      "prompt_chars": 3333
+    },
+    {
+      "purpose": "Policy Reviewer: decide",
+      "ok": true,
+      "latency_ms": 9080.8,
+      "credits": 0.02092097751243781,
+      "prompt_chars": 3986
+    }
+  ],
+  "credits_used": 0.075,
+  "internal_latency_ms": 27716.8
+}

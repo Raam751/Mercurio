@@ -1,0 +1,217 @@
+{
+  "request_id": "REQ-1002",
+  "recommendation": "Route for Security and Legal review before approval: required reviews: Security, Legal",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester Sarah Lee (E001) is in Marketing; manager David Chen.",
+      "reference": "employees.csv:E001"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Marketing has $15,000 available; request $12,000 is within budget.",
+      "reference": "department_budgets.csv:Marketing"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "PixelCraft Pro (PixelCraft, Design & Creative) is 'Approved' with 65 seats, scope Company-wide: Design and prototyping [match: same_category].",
+      "reference": "software_catalog.csv:SW001"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "CreativeSuite (CreativeSuite Labs, Design & Creative) is 'Approved' with 40 seats, scope Marketing: Creative production suite [match: same_category].",
+      "reference": "software_catalog.csv:SW002"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "No previous purchases from this vendor.",
+      "reference": "purchase_history.csv"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'New', security 'Pending' (reviewed never), legal terms 'Draft'. Note: Not yet through full onboarding.",
+      "reference": "vendors.csv:V011"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service: risk 'medium', security review 'not_completed' (last never), processes personal data: True, stores data outside region: False. Note: Vendor onboarding incomplete..",
+      "reference": "vendor-risk API GET /vendor-risk/BrandBoard"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 11 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $12,000 falls in the $10,000.01-$25,000 band: minimum approvals Department Head, Finance, Procurement.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Request fits Marketing's available budget. A positive budget check does not imply approval.",
+      "reference": "Policy \u00a72"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Existing approved option(s) overlap with this request: PixelCraft Pro (SW001), CreativeSuite (SW002). Overlap is not an automatic rejection; confirm the gap or exception reason.",
+      "reference": "Policy \u00a73"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Vendor security assessment is not current (service state: incomplete).",
+      "reference": "Policy \u00a75"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Legal review required: new vendor with annual spend $12,000 (>= $10,000); legal terms are not approved/standard (Draft).",
+      "reference": "Policy \u00a77"
+    }
+  ],
+  "required_approvals": [
+    "Department Head",
+    "Finance",
+    "Procurement",
+    "Security",
+    "Legal"
+  ],
+  "missing_information": [],
+  "risk_flags": [
+    "existing_tool_overlap",
+    "security_review_required",
+    "legal_review_required"
+  ],
+  "next_step": "1) Send the evidence package to Security and Legal for review. 2) Procurement to confirm the stated gap versus existing option(s) SW001, SW002. 3) Route to Department Head, Finance and Procurement for approval. 4) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 0,
+    "tool_calls": 8,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "single",
+  "llm_provider": "LLM_PROVIDER=rules",
+  "model": null,
+  "primary_action": "SPECIALIST_REVIEW",
+  "actions": [
+    "SPECIALIST_REVIEW",
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "Route for specialist review before approval. Reasons: required reviews: Security, Legal. Required approvals: Department Head, Finance, Procurement, Security and Legal.",
+  "overlap_assessment": {
+    "verdict": "unclear",
+    "existing_option": "SW001",
+    "reason": "Overlap found; Procurement must confirm the stated gap.",
+    "evidence_ids": []
+  },
+  "clarifying_questions": [],
+  "approval_reasons": {
+    "Department Head": [
+      "annual amount $12,000 is in the $10,000.01-$25,000 band"
+    ],
+    "Finance": [
+      "annual amount $12,000 is in the $10,000.01-$25,000 band"
+    ],
+    "Procurement": [
+      "annual amount $12,000 is in the $10,000.01-$25,000 band"
+    ],
+    "Security": [
+      "vendor security assessment is missing or not completed"
+    ],
+    "Legal": [
+      "new vendor with annual spend $12,000 (>= $10,000)",
+      "legal terms are not approved/standard (Draft)"
+    ]
+  },
+  "next_steps": [
+    "Send the evidence package to Security and Legal for review.",
+    "Procurement to confirm the stated gap versus existing option(s) SW001, SW002.",
+    "Route to Department Head, Finance and Procurement for approval.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9",
+    "EV-10",
+    "EV-11",
+    "EV-12",
+    "EV-13"
+  ],
+  "guardrail_events": [],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 1.0,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.6,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 3.0,
+      "error": null
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.1,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.2,
+      "error": null
+    }
+  ],
+  "llm_trace": [],
+  "credits_used": 0.0,
+  "internal_latency_ms": 6.5
+}

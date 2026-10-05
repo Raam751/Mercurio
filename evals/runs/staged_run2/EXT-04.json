@@ -1,0 +1,275 @@
+{
+  "request_id": "REQ-1004",
+  "recommendation": "Route for Security, Privacy and Legal review before approval: required reviews: Security, Privacy, Legal",
+  "evidence": [
+    {
+      "source": "get_request_details",
+      "finding": "Requester Mia Thompson (E005) is in Customer Success; manager Robert King.",
+      "reference": "employees.csv:E005"
+    },
+    {
+      "source": "check_department_budget",
+      "finding": "Customer Success has $7,000 available; request $6,000 is within budget.",
+      "reference": "department_budgets.csv:Customer Success"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "HelpDeskly (HelpDeskly, Customer Support) is 'Approved' with 75 seats, scope Customer Success: Support ticketing [match: keyword].",
+      "reference": "software_catalog.csv:SW007"
+    },
+    {
+      "source": "search_software_catalog",
+      "finding": "NeuralDesk Business (NeuralDesk, General AI) is 'Approved - limited use' with 150 seats, scope Company-wide: AI assistant; sensitive data restrictions apply [match: same_vendor, same_category].",
+      "reference": "software_catalog.csv:SW009"
+    },
+    {
+      "source": "get_purchase_history",
+      "finding": "2026-07-29: Operations bought NeuralDesk Business for $60,000 (Approved; Limited-use policy applies).",
+      "reference": "purchase_history.csv:PO-2531"
+    },
+    {
+      "source": "get_vendor_registry_record",
+      "finding": "Registry: procurement 'Approved', security 'Approved' (reviewed 2026-03-02), legal terms 'Approved'. Note: Approved only for permitted data classes.",
+      "reference": "vendors.csv:V009"
+    },
+    {
+      "source": "get_vendor_risk_assessment",
+      "finding": "Vendor-risk service: risk 'medium', security review 'approved' (last 2026-03-02), processes personal data: True, stores data outside region: True. Note: Sensitive-data use requires Security and Privacy review..",
+      "reference": "vendor-risk API GET /vendor-risk/NeuralDesk"
+    },
+    {
+      "source": "screen_untrusted_text",
+      "finding": "Screened 11 free-text field(s); no embedded instructions found.",
+      "reference": "Policy \u00a79"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Annual amount $6,000 falls in the $1,000.01-$10,000 band: minimum approvals Department Head, Procurement.",
+      "reference": "Policy \u00a74"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Request fits Customer Success's available budget. A positive budget check does not imply approval.",
+      "reference": "Policy \u00a72"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Existing approved option(s) overlap with this request: HelpDeskly (SW007), NeuralDesk Business (SW009). Overlap is not an automatic rejection; confirm the gap or exception reason.",
+      "reference": "Policy \u00a73"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "NeuralDesk Business is approved for limited use only; an earlier approval does not extend to this data class.",
+      "reference": "Policy \u00a78"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Security review required for: customer PII.",
+      "reference": "Policy \u00a75"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Privacy review required: tool will process customer PII; sensitive data may be stored outside the operating region.",
+      "reference": "Policy \u00a76"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Legal review required: material cross-region data-processing issue.",
+      "reference": "Policy \u00a77"
+    },
+    {
+      "source": "apply_policy_rules",
+      "finding": "Urgency 'high' noted; it does not remove any review or approval.",
+      "reference": "Policy \u00a711"
+    }
+  ],
+  "required_approvals": [
+    "Department Head",
+    "Procurement",
+    "Security",
+    "Privacy",
+    "Legal"
+  ],
+  "missing_information": [],
+  "risk_flags": [
+    "existing_tool_overlap",
+    "limited_use_restriction",
+    "security_review_required",
+    "privacy_review_required",
+    "legal_review_required",
+    "cross_region_data"
+  ],
+  "next_step": "1) Send the evidence package to Security, Privacy and Legal for review. 2) Procurement to confirm the stated gap versus existing option(s) SW007, SW009. 3) Route to Department Head and Procurement for approval. 4) A human approver makes the final decision; the copilot does not approve or purchase.",
+  "human_review_required": true,
+  "telemetry": {
+    "llm_calls": 3,
+    "tool_calls": 9,
+    "tool_names": [
+      "get_request_details",
+      "check_department_budget",
+      "search_software_catalog",
+      "get_purchase_history",
+      "get_vendor_registry_record",
+      "get_vendor_risk_assessment",
+      "lookup_policy_sections",
+      "screen_untrusted_text",
+      "apply_policy_rules"
+    ]
+  },
+  "architecture": "staged",
+  "llm_provider": "Kiro CLI, model claude-haiku-4.5",
+  "model": "claude-haiku-4.5",
+  "primary_action": "SPECIALIST_REVIEW",
+  "actions": [
+    "SPECIALIST_REVIEW",
+    "STANDARD_APPROVAL"
+  ],
+  "rationale": "The request is within budget [EV-2] but triggers multiple required reviews: Security and Privacy must assess customer PII access and cross-region storage [EV-7, EV-13, EV-14], and Legal must review the cross-region data-processing issue [EV-15]. Department Head and Procurement approval are required by the $1,000.01\u2013$10,000 band [EV-9]. A critical gap exists: the evidence does not explain why HelpDeskly, the approved tool already in use by Customer Success, cannot meet the stated need for drafting replies and summarizing tickets [EV-3]. Additionally, NeuralDesk Business is already approved but only for limited use with sensitive-data restrictions [EV-4, EV-5, EV-6]; clarification is needed on whether Support Assistant is a separate product or a different tier requiring the same restrictions.",
+  "overlap_assessment": {
+    "verdict": "unclear",
+    "existing_option": "SW007",
+    "reason": "HelpDeskly is approved for Customer Success ticketing, but the evidence does not clarify whether its drafting and summarization capabilities match the stated need or whether NeuralDesk Support Assistant offers materially different functionality.",
+    "evidence_ids": [
+      "EV-3",
+      "EV-1"
+    ]
+  },
+  "clarifying_questions": [
+    "Does HelpDeskly currently provide AI-assisted reply drafting and ticket summarization, and if so, what specific capability gap does NeuralDesk Support Assistant address?",
+    "Is NeuralDesk Support Assistant a separate product from NeuralDesk Business, or a different tier or module of the same product?"
+  ],
+  "approval_reasons": {
+    "Department Head": [
+      "annual amount $6,000 is in the $1,000.01-$10,000 band"
+    ],
+    "Procurement": [
+      "annual amount $6,000 is in the $1,000.01-$10,000 band"
+    ],
+    "Security": [
+      "customer PII",
+      "limited-use product requested for a sensitive or unknown data class"
+    ],
+    "Privacy": [
+      "tool will process customer PII",
+      "sensitive data may be stored outside the operating region"
+    ],
+    "Legal": [
+      "material cross-region data-processing issue"
+    ]
+  },
+  "next_steps": [
+    "Send the evidence package to Security, Privacy and Legal for review.",
+    "Procurement to confirm the stated gap versus existing option(s) SW007, SW009.",
+    "Route to Department Head and Procurement for approval.",
+    "A human approver makes the final decision; the copilot does not approve or purchase."
+  ],
+  "evidence_ids": [
+    "EV-1",
+    "EV-2",
+    "EV-3",
+    "EV-4",
+    "EV-5",
+    "EV-6",
+    "EV-7",
+    "EV-8",
+    "EV-9",
+    "EV-10",
+    "EV-11",
+    "EV-12",
+    "EV-13",
+    "EV-14",
+    "EV-15",
+    "EV-16"
+  ],
+  "guardrail_events": [],
+  "tool_trace": [
+    {
+      "tool": "get_request_details",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 6.6,
+      "error": null
+    },
+    {
+      "tool": "check_department_budget",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 4.0,
+      "error": null
+    },
+    {
+      "tool": "search_software_catalog",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 2.4,
+      "error": null
+    },
+    {
+      "tool": "get_purchase_history",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 1.5,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_registry_record",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 1.4,
+      "error": null
+    },
+    {
+      "tool": "get_vendor_risk_assessment",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 10.3,
+      "error": null
+    },
+    {
+      "tool": "lookup_policy_sections",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.5,
+      "error": null
+    },
+    {
+      "tool": "screen_untrusted_text",
+      "requested_by": "agent",
+      "ok": true,
+      "latency_ms": 0.1,
+      "error": null
+    },
+    {
+      "tool": "apply_policy_rules",
+      "requested_by": "system",
+      "ok": true,
+      "latency_ms": 0.3,
+      "error": null
+    }
+  ],
+  "llm_trace": [
+    {
+      "purpose": "Evidence Analyst: plan",
+      "ok": true,
+      "latency_ms": 9309.2,
+      "credits": 0.02803033008291874,
+      "prompt_chars": 2705
+    },
+    {
+      "purpose": "Evidence Analyst: brief",
+      "ok": true,
+      "latency_ms": 21788.2,
+      "credits": 0.039929040066335,
+      "prompt_chars": 4716
+    },
+    {
+      "purpose": "Policy Reviewer: decide",
+      "ok": true,
+      "latency_ms": 11314.4,
+      "credits": 0.030081827197346603,
+      "prompt_chars": 5339
+    }
+  ],
+  "credits_used": 0.098,
+  "internal_latency_ms": 42450.5
+}
