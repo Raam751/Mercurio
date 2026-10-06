@@ -43,6 +43,30 @@ KIRO_API_KEY=ksk_...                                # Kiro portal -> API Keys (P
 rules-only. The CLI runs the tool-free agent in [.kiro/agents/procurement-llm.md](.kiro/agents/procurement-llm.md),
 so the model cannot read files, run commands or browse. Every fact it sees comes from this app's tools.
 
+### Deployment (Docker / Hugging Face Spaces)
+
+The [Dockerfile](Dockerfile) builds one container: Streamlit on `$PORT` (default 8501), Kiro CLI installed, and the
+mock vendor-risk API started inside the same process. Pass `KIRO_API_KEY` at runtime as a secret. Without it, the
+deployed app runs rules-only.
+
+```bash
+docker build -t mercurio .
+docker run -p 8501:8501 --env-file .env mercurio      # http://127.0.0.1:8501
+```
+
+Hosted on a free Hugging Face Docker Space (16 GB RAM):
+
+```bash
+pip install huggingface_hub && hf auth login         # one time, write-access token
+python deploy/deploy_hf_space.py --space <hf-username>/mercurio
+```
+
+The script uploads committed files only (never `.env`) and stores the key as a Space secret.
+
+Sizing: a single staged request peaked at about 490 MiB of process memory in testing. Use a host with at least
+1 GB RAM; 512 MB tiers will run out of memory under concurrent use. **The hosted app has no login, and every run
+uses the key owner's Kiro credits** (about 0.05 per single-agent request).
+
 ### Tests and evaluations
 
 ```bash
