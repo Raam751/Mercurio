@@ -54,18 +54,22 @@ docker build -t mercurio .
 docker run -p 8501:8501 --env-file .env mercurio      # http://127.0.0.1:8501
 ```
 
-Hosted on a free Hugging Face Docker Space (16 GB RAM):
+Any host that builds a Dockerfile and sets `$PORT` works (Railway, Google Cloud Run, Render, Koyeb, a VM). Set
+`KIRO_API_KEY` as a secret environment variable in the host's dashboard.
 
-```bash
-pip install huggingface_hub && hf auth login         # one time, write-access token
-python deploy/deploy_hf_space.py --space <hf-username>/mercurio
-```
+**Sizing, measured locally with Docker limits:**
 
-The script uploads committed files only (never `.env`) and stores the key as a Space secret.
+| Limits | Result |
+|---|---|
+| 1+ vCPU, 512 MB | Works: single-agent request in about 25 s, no out-of-memory |
+| 0.1 vCPU, 512 MB (typical free tier) | Each Kiro CLI call times out after 120 s; the app falls back to rules-only after about 5 min |
 
-Sizing: a single staged request peaked at about 490 MiB of process memory in testing. Use a host with at least
-1 GB RAM; 512 MB tiers will run out of memory under concurrent use. **The hosted app has no login, and every run
-uses the key owner's Kiro credits** (about 0.05 per single-agent request).
+A staged request peaked at about 490 MiB of process memory. Use at least **0.5–1 vCPU and 1 GB RAM** for the LLM
+agents. On a 0.1-vCPU free tier, deploy with `LLM_PROVIDER=rules` instead.
+
+`deploy/deploy_hf_space.py` deploys to a Hugging Face Docker Space, which now requires a Hugging Face PRO plan.
+
+**The hosted app has no login, and every run uses the key owner's Kiro credits** (about 0.05 per single-agent request).
 
 ### Tests and evaluations
 
